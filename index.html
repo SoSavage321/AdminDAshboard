@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FunPlusMath - Admin Authentication</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Authentication Container -->
+    <div class="auth-container" id="auth-container">
+        <!-- Login Form -->
+        <div class="auth-form" id="login-form">
+            <div class="form-header">
+                <h2>Admin Login</h2>
+                <p>Welcome back! Please login to your account</p>
+            </div>
+            <form id="login">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" required placeholder="admin@funplusmath.com">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required placeholder="Enter your password">
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="remember-me">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" id="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="auth-form hidden" id="register-form">
+            <div class="form-header">
+                <h2>Create Admin Account</h2>
+                <p>Set up your administrator account</p>
+            </div>
+            <form id="register">
+                <div class="form-group">
+                    <label for="register-name">Full Name</label>
+                    <input type="text" id="register-name" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email Address</label>
+                    <input type="email" id="register-email" required placeholder="admin@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" required placeholder="Create a strong password">
+                    <div class="password-strength">
+                        <div class="strength-meter">
+                            <div class="strength-bar"></div>
+                        </div>
+                        <span class="strength-text">Password strength</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirm Password</label>
+                    <input type="password" id="register-confirm-password" required placeholder="Confirm your password">
+                </div>
+                <div class="form-group">
+                    <label for="admin-key">Administrator Key</label>
+                    <input type="password" id="admin-key" required placeholder="Enter administrator key">
+                    <small>Provided by system administrator</small>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="terms-agree" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+            <div class="auth-footer">
+                <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+            </div>
+        </div>
+
+        <!-- Forgot Password Form -->
+        <div class="auth-form hidden" id="forgot-form">
+            <div class="form-header">
+                <h2>Reset Password</h2>
+                <p>Enter your email to receive a reset link</p>
+            </div>
+            <form id="forgot-password-form">
+                <div class="form-group">
+                    <label for="reset-email">Email Address</label>
+                    <input type="email" id="reset-email" required placeholder="admin@example.com">
+                </div>
+                <button type="submit" class="btn-primary">Send Reset Link</button>
+            </form>
+            <div class="auth-footer">
+                <p>Remember your password? <a href="#" id="back-to-login">Back to Login</a></p>
+            </div>
+        </div>
+
+        <!-- Brand Section -->
+        <div class="brand-section">
+            <div class="brand-content">
+                <h1>FunPlusMath</h1>
+                <p>Admin Dashboard</p>
+                <div class="brand-features">
+                    <div class="feature">
+                        <span class="feature-icon">📊</span>
+                        <h3>Monitor Progress</h3>
+                        <p>Track student performance and engagement metrics</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">👥</span>
+                        <h3>Manage Users</h3>
+                        <p>Control access for students, teachers, and parents</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">📚</span>
+                        <h3>Content Management</h3>
+                        <p>Create and organize educational content</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container" id="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>FunPlusMath</h2>
+                <p>Admin Dashboard</p>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#" class="active" data-section="dashboard"><span>📊</span> Dashboard</a></li>
+                    <li><a href="#" data-section="users"><span>👥</span> User Management</a></li>
+                    <li><a href="#" data-section="content"><span>📚</span> Content Management</a></li>
+                    <li><a href="#" data-section="progress"><span>📈</span> Progress Tracking</a></li>
+                    <li><a href="#" data-section="leaderboards"><span>🏆</span> Leaderboards</a></li>
+                    <li><a href="#" data-section="reports"><span>📋</span> Reports</a></li>
+                    <li><a href="#" data-section="system"><span>⚙️</span> System Settings</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <button id="logout-btn">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                    <button>🔍</button>
+                </div>
+                <div class="user-profile">
+                    <span id="admin-name">Admin User</span>
+                    <div class="avatar">A</div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <h2>Dashboard Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Users</h3>
+                        <p class="stat-number">1,245</p>
+                        <p class="stat-change">+12% this week</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Today</h3>
+                        <p class="stat-number">387</p>
+                        <p class="stat-change">+5% from yesterday</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Quizzes Completed</h3>
+                        <p class="stat-number">5,892</p>
+                        <p class="stat-change">+23% this week</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Avg. Score</h3>
+                        <p class="stat-number">78%</p>
+                        <p class="stat-change">+3% improvement</p>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <p>New user "Lindiwe M." registered</p>
+                            <span class="time">10 minutes ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <p>Teacher "Mr. Khumalo" added new quiz</p>
+                            <span class="time">45 minutes ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <p>User "Thabo S." achieved Gold badge in Multiplication</p>
+                            <span class="time">2 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Management Section -->
+            <section id="users" class="content-section">
+                <h2>User Management</h2>
+                <div class="section-controls">
+                    <div class="filter-options">
+                        <select>
+                            <option>All Users</option>
+                            <option>Students</option>
+                            <option>Teachers</option>
+                            <option>Parents</option>
+                        </select>
+                        <input type="text" placeholder="Filter users...">
+                    </div>
+                    <button class="btn-primary">Add New User</button>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Grade</th>
+                            <th>School</th>
+                            <th>Last Active</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lindiwe Maseko</td>
+                            <td>Student</td>
+                            <td>Grade 5</td>
+                            <td>Enhlanzeni Primary</td>
+                            <td>Today</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>
+                                <button class="btn-sm">Edit</button>
+                                <button class="btn-sm btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mr. Khumalo</td>
+                            <td>Teacher</td>
+                            <td>Grade 4-6</td>
+                            <td>Enhlanzeni Primary</td>
+                            <td>Yesterday</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>
+                                <button class="btn-sm">Edit</button>
+                                <button class="btn-sm btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Thabo Sithole</td>
+                            <td>Student</td>
+                            <td>Grade 6</td>
+                            <td>Mapulaneng Primary</td>
+                            <td>3 days ago</td>
+                            <td><span class="status inactive">Inactive</span></td>
+                            <td>
+                                <button class="btn-sm">Edit</button>
+                                <button class="btn-sm btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Content Management Section -->
+            <section id="content" class="content-section">
+                <h2>Content Management</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="quizzes">Quizzes</button>
+                    <button class="tab-btn" data-tab="challenges">Challenges</button>
+                    <button class="tab-btn" data-tab="badges">Badges</button>
+                </div>
+                
+                <div id="quizzes" class="tab-content active">
+                    <div class="section-controls">
+                        <div class="filter-options">
+                            <select>
+                                <option>All Grades</option>
+                                <option>Grade 4</option>
+                                <option>Grade 5</option>
+                                <option>Grade 6</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary">Add New Quiz</button>
+                    </div>
+                    
+                    <div class="content-list">
+                        <div class="content-item">
+                            <h4>Multiplication Basics</h4>
+                            <p>Grade 4 • 15 questions • Term 1</p>
+                            <div class="item-actions">
+                                <button class="btn-sm">Edit</button>
+                                <button class="btn-sm">Preview</button>
+                                <button class="btn-sm btn-danger">Delete</button>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <h4>Fractions Introduction</h4>
+                            <p>Grade 5 • 20 questions • Term 2</p>
+                            <div class="item-actions">
+                                <button class="btn-sm">Edit</button>
+                                <button class="btn-sm">Preview</button>
+                                <button class="btn-sm btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="challenges" class="tab-content">
+                    <p>Weekly and daily challenges management interface</p>
+                </div>
+                
+                <div id="badges" class="tab-content">
+                    <p>Badge creation and management interface</p>
+                </div>
+            </section>
+
+            <!-- Progress Tracking Section -->
+            <section id="progress" class="content-section">
+                <h2>Progress Tracking</h2>
+                <div class="progress-filters">
+                    <select>
+                        <option>All Schools</option>
+                        <option>Enhlanzeni Primary</option>
+                        <option>Mapulaneng Primary</option>
+                    </select>
+                    <select>
+                        <option>All Grades</option>
+                        <option>Grade 4</option>
+                        <option>Grade 5</option>
+                        <option>Grade 6</option>
+                    </select>
+                    <select>
+                        <option>All Terms</option>
+                        <option>Term 1</option>
+                        <option>Term 2</option>
+                        <option>Term 3</option>
+                        <option>Term 4</option>
+                    </select>
+                </div>
+                
+                <div class="progress-charts">
+                    <div class="chart-container">
+                        <h4>Overall Performance</h4>
+                        <div class="chart-placeholder">Performance chart visualization</div>
+                    </div>
+                    <div class="chart-container">
+                        <h4>Topic Mastery</h4>
+                        <div class="chart-placeholder">Topic mastery chart visualization</div>
+                    </div>
+                </div>
+                
+                <div class="progress-table">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Grade</th>
+                                <th>School</th>
+                                <th>Avg. Score</th>
+                                <th>Quizzes Completed</th>
+                                <th>Last Activity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Lindiwe Maseko</td>
+                                <td>5</td>
+                                <td>Enhlanzeni Primary</td>
+                                <td>82%</td>
+                                <td>24</td>
+                                <td>Today</td>
+                            </tr>
+                            <tr>
+                                <td>Thabo Sithole</td>
+                                <td>6</td>
+                                <td>Mapulaneng Primary</td>
+                                <td>76%</td>
+                                <td>18</td>
+                                <td>3 days ago</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Other sections would follow the same pattern -->
+            <section id="leaderboards" class="content-section">
+                <h2>Leaderboards Management</h2>
+                <p>Configure and manage leaderboard settings</p>
+            </section>
+            
+            <section id="reports" class="content-section">
+                <h2>Reports</h2>
+                <p>Generate and view system reports</p>
+            </section>
+            
+            <section id="system" class="content-section">
+                <h2>System Settings</h2>
+                <p>Configure application settings and preferences</p>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
