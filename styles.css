@@ -655,3 +655,81 @@ small {
 .notification.info {
     background: #3498db;
 }
+
+/* SPA Transition for Auth and Dashboard */
+.auth-container,
+.dashboard-container {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.auth-container.hidden {
+    opacity: 0;
+    transform: translateX(-50px);
+    pointer-events: none;
+}
+
+.dashboard-container.show {
+    display: flex;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Smooth sidebar content scroll */
+.main-content {
+    transition: all 0.3s ease;
+}
+
+/* Optional: Fade-in for content sections */
+.content-section {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.content-section.active {
+    opacity: 1;
+}
+
+/* Bug Reports - simple card layout */
+.report-card {
+    background: white;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    display: block;
+}
+.report-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.report-header strong {
+    color: #2c3e50;
+}
+.muted {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+.report-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.report-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+.report-key {
+    min-width: 120px;
+    font-weight: 600;
+    color: #34495e;
+}
+.report-val {
+    color: #2c3e50;
+    white-space: pre-wrap;
+}
+.report-card .error {
+    color: #e74c3c;
+}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FunPlusMath - Admin Authentication</title>
+    <title>FunPlusMath - Admin Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -63,6 +63,7 @@
                         </div>
                         <span class="strength-text">Password strength</span>
                     </div>
+                    <small class="password-hint">Tip: Use at least 8 characters and include a special character (e.g. ! @ # $ %).</small>
                 </div>
                 <div class="form-group">
                     <label for="register-confirm-password">Confirm Password</label>
@@ -104,35 +105,10 @@
                 <p>Remember your password? <a href="#" id="back-to-login">Back to Login</a></p>
             </div>
         </div>
-
-        <!-- Brand Section -->
-        <div class="brand-section">
-            <div class="brand-content">
-                <h1>FunPlusMath</h1>
-                <p>Admin Dashboard</p>
-                <div class="brand-features">
-                    <div class="feature">
-                        <span class="feature-icon">📊</span>
-                        <h3>Monitor Progress</h3>
-                        <p>Track student performance and engagement metrics</p>
-                    </div>
-                    <div class="feature">
-                        <span class="feature-icon">👥</span>
-                        <h3>Manage Users</h3>
-                        <p>Control access for students, teachers, and parents</p>
-                    </div>
-                    <div class="feature">
-                        <span class="feature-icon">📚</span>
-                        <h3>Content Management</h3>
-                        <p>Create and organize educational content</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Dashboard Container -->
-    <div class="dashboard-container" id="dashboard-container">
+    <div class="dashboard-container hidden" id="dashboard-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="logo">
@@ -143,6 +119,7 @@
                 <ul>
                     <li><a href="#" class="active" data-section="dashboard"><span>📊</span> Dashboard</a></li>
                     <li><a href="#" data-section="users"><span>👥</span> User Management</a></li>
+                    <li><a href="#" data-section="add-teachers"><span>🧑</span> Add Teachers</a></li>
                     <li><a href="#" data-section="content"><span>📚</span> Content Management</a></li>
                     <li><a href="#" data-section="progress"><span>📈</span> Progress Tracking</a></li>
                     <li><a href="#" data-section="leaderboards"><span>🏆</span> Leaderboards</a></li>
@@ -159,8 +136,8 @@
         <main class="main-content">
             <header class="top-bar">
                 <div class="search-bar">
-                    <input type="text" placeholder="Search...">
-                    <button>🔍</button>
+                    <input type="text" id="search-users" placeholder="Search users...">
+                    <button id="search-btn">🔍</button>
                 </div>
                 <div class="user-profile">
                     <span id="admin-name">Admin User</span>
@@ -174,41 +151,26 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Total Users</h3>
-                        <p class="stat-number">1,245</p>
-                        <p class="stat-change">+12% this week</p>
+                        <p class="stat-number" id="total-users">0</p>
                     </div>
                     <div class="stat-card">
                         <h3>Active Today</h3>
-                        <p class="stat-number">387</p>
-                        <p class="stat-change">+5% from yesterday</p>
+                        <p class="stat-number" id="active-today">0</p>
                     </div>
                     <div class="stat-card">
                         <h3>Quizzes Completed</h3>
-                        <p class="stat-number">5,892</p>
-                        <p class="stat-change">+23% this week</p>
+                        <p class="stat-number" id="quizzes-completed">0</p>
                     </div>
                     <div class="stat-card">
                         <h3>Avg. Score</h3>
-                        <p class="stat-number">78%</p>
-                        <p class="stat-change">+3% improvement</p>
+                        <p class="stat-number" id="avg-score">0%</p>
                     </div>
                 </div>
-                
+
                 <div class="recent-activity">
                     <h3>Recent Activity</h3>
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <p>New user "Lindiwe M." registered</p>
-                            <span class="time">10 minutes ago</span>
-                        </div>
-                        <div class="activity-item">
-                            <p>Teacher "Mr. Khumalo" added new quiz</p>
-                            <span class="time">45 minutes ago</span>
-                        </div>
-                        <div class="activity-item">
-                            <p>User "Thabo S." achieved Gold badge in Multiplication</p>
-                            <span class="time">2 hours ago</span>
-                        </div>
+                    <div class="activity-list" id="recent-activity">
+                        <!-- Populated dynamically -->
                     </div>
                 </div>
             </section>
@@ -218,17 +180,17 @@
                 <h2>User Management</h2>
                 <div class="section-controls">
                     <div class="filter-options">
-                        <select>
-                            <option>All Users</option>
-                            <option>Students</option>
-                            <option>Teachers</option>
-                            <option>Parents</option>
+                        <select id="role-filter">
+                            <option value="all">All Users</option>
+                            <option value="Student">Students</option>
+                            <option value="Teacher">Teachers</option>
+                            <option value="Parent">Parents</option>
                         </select>
-                        <input type="text" placeholder="Filter users...">
+                        <input type="text" id="user-search" placeholder="Filter users...">
                     </div>
-                    <button class="btn-primary">Add New User</button>
+                    <button class="btn-primary" id="add-user-btn">Add New User</button>
                 </div>
-                
+
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -241,45 +203,26 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Lindiwe Maseko</td>
-                            <td>Student</td>
-                            <td>Grade 5</td>
-                            <td>Enhlanzeni Primary</td>
-                            <td>Today</td>
-                            <td><span class="status active">Active</span></td>
-                            <td>
-                                <button class="btn-sm">Edit</button>
-                                <button class="btn-sm btn-danger">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Mr. Khumalo</td>
-                            <td>Teacher</td>
-                            <td>Grade 4-6</td>
-                            <td>Enhlanzeni Primary</td>
-                            <td>Yesterday</td>
-                            <td><span class="status active">Active</span></td>
-                            <td>
-                                <button class="btn-sm">Edit</button>
-                                <button class="btn-sm btn-danger">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Thabo Sithole</td>
-                            <td>Student</td>
-                            <td>Grade 6</td>
-                            <td>Mapulaneng Primary</td>
-                            <td>3 days ago</td>
-                            <td><span class="status inactive">Inactive</span></td>
-                            <td>
-                                <button class="btn-sm">Edit</button>
-                                <button class="btn-sm btn-danger">Delete</button>
-                            </td>
-                        </tr>
+                    <tbody id="users-table-body">
+                        <!-- Populated dynamically -->
                     </tbody>
                 </table>
+            </section>
+
+            <!-- Add Teachers Section -->
+            <section id="add-teachers" class="content-section">
+                <h2>Add Teacher</h2>
+                <form id="add-teacher-form" style="max-width: 400px; margin: 0 auto;">
+                    <div class="form-group">
+                        <label for="teacher-name">Teacher Name</label>
+                        <input type="text" id="teacher-name" name="teacher-name" required placeholder="Enter teacher's name">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher-email">Teacher Email</label>
+                        <input type="email" id="teacher-email" name="teacher-email" required placeholder="Enter teacher's email">
+                    </div>
+                    <button type="submit" class="btn-primary">Add Teacher</button>
+                </form>
             </section>
 
             <!-- Content Management Section -->
@@ -290,48 +233,34 @@
                     <button class="tab-btn" data-tab="challenges">Challenges</button>
                     <button class="tab-btn" data-tab="badges">Badges</button>
                 </div>
-                
+
                 <div id="quizzes" class="tab-content active">
                     <div class="section-controls">
                         <div class="filter-options">
-                            <select>
-                                <option>All Grades</option>
-                                <option>Grade 4</option>
-                                <option>Grade 5</option>
-                                <option>Grade 6</option>
+                            <select id="grade-filter">
+                                <option value="all">All Grades</option>
+                                <option value="4">Grade 4</option>
+                                <option value="5">Grade 5</option>
+                                <option value="6">Grade 6</option>
                             </select>
                         </div>
-                        <button class="btn-primary">Add New Quiz</button>
+                        <button class="btn-primary" id="add-quiz-btn">Add New Quiz</button>
                     </div>
-                    
-                    <div class="content-list">
-                        <div class="content-item">
-                            <h4>Multiplication Basics</h4>
-                            <p>Grade 4 • 15 questions • Term 1</p>
-                            <div class="item-actions">
-                                <button class="btn-sm">Edit</button>
-                                <button class="btn-sm">Preview</button>
-                                <button class="btn-sm btn-danger">Delete</button>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <h4>Fractions Introduction</h4>
-                            <p>Grade 5 • 20 questions • Term 2</p>
-                            <div class="item-actions">
-                                <button class="btn-sm">Edit</button>
-                                <button class="btn-sm">Preview</button>
-                                <button class="btn-sm btn-danger">Delete</button>
-                            </div>
-                        </div>
+                    <div class="content-list" id="quiz-list">
+                        <!-- Populated dynamically -->
                     </div>
                 </div>
-                
+
                 <div id="challenges" class="tab-content">
-                    <p>Weekly and daily challenges management interface</p>
+                    <div id="challenge-list">
+                        <!-- Populated dynamically -->
+                    </div>
                 </div>
-                
+
                 <div id="badges" class="tab-content">
-                    <p>Badge creation and management interface</p>
+                    <div id="badge-list">
+                        <!-- Populated dynamically -->
+                    </div>
                 </div>
             </section>
 
@@ -339,37 +268,28 @@
             <section id="progress" class="content-section">
                 <h2>Progress Tracking</h2>
                 <div class="progress-filters">
-                    <select>
-                        <option>All Schools</option>
-                        <option>Enhlanzeni Primary</option>
-                        <option>Mapulaneng Primary</option>
+                    <select id="progress-school-filter">
+                        <option value="all">All Schools</option>
                     </select>
-                    <select>
-                        <option>All Grades</option>
-                        <option>Grade 4</option>
-                        <option>Grade 5</option>
-                        <option>Grade 6</option>
+                    <select id="progress-grade-filter">
+                        <option value="all">All Grades</option>
                     </select>
-                    <select>
-                        <option>All Terms</option>
-                        <option>Term 1</option>
-                        <option>Term 2</option>
-                        <option>Term 3</option>
-                        <option>Term 4</option>
+                    <select id="progress-term-filter">
+                        <option value="all">All Terms</option>
                     </select>
                 </div>
-                
+
                 <div class="progress-charts">
                     <div class="chart-container">
                         <h4>Overall Performance</h4>
-                        <div class="chart-placeholder">Performance chart visualization</div>
+                        <div class="chart-placeholder" id="overall-performance-chart"></div>
                     </div>
                     <div class="chart-container">
                         <h4>Topic Mastery</h4>
-                        <div class="chart-placeholder">Topic mastery chart visualization</div>
+                        <div class="chart-placeholder" id="topic-mastery-chart"></div>
                     </div>
                 </div>
-                
+
                 <div class="progress-table">
                     <table class="data-table">
                         <thead>
@@ -382,46 +302,67 @@
                                 <th>Last Activity</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Lindiwe Maseko</td>
-                                <td>5</td>
-                                <td>Enhlanzeni Primary</td>
-                                <td>82%</td>
-                                <td>24</td>
-                                <td>Today</td>
-                            </tr>
-                            <tr>
-                                <td>Thabo Sithole</td>
-                                <td>6</td>
-                                <td>Mapulaneng Primary</td>
-                                <td>76%</td>
-                                <td>18</td>
-                                <td>3 days ago</td>
-                            </tr>
+                        <tbody id="progress-table-body">
+                            <!-- Populated dynamically -->
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- Other sections would follow the same pattern -->
+            <!-- Other sections -->
             <section id="leaderboards" class="content-section">
                 <h2>Leaderboards Management</h2>
-                <p>Configure and manage leaderboard settings</p>
+                <div id="leaderboard-list">
+                    <!-- Populated dynamically -->
+                </div>
             </section>
-            
+
             <section id="reports" class="content-section">
                 <h2>Reports</h2>
-                <p>Generate and view system reports</p>
+                <div id="report-list">
+                    <!-- Populated dynamically -->
+                </div>
             </section>
-            
+
             <section id="system" class="content-section">
                 <h2>System Settings</h2>
-                <p>Configure application settings and preferences</p>
+                <div id="system-settings">
+                    <!-- Populated dynamically -->
+                </div>
             </section>
         </main>
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // Sidebar navigation
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarLinks = document.querySelectorAll('.nav-menu a[data-section]');
+            const sections = document.querySelectorAll('.content-section');
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    sections.forEach(sec => sec.classList.remove('active'));
+                    const target = document.getElementById(sectionId);
+                    if (target) target.classList.add('active');
+                });
+            });
+
+            // Tabs for Content Management
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetTab = btn.dataset.tab;
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
