@@ -30,9 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const usersTableBody = document.getElementById("users-table-body");// Make sure your table has id="users-table"
 
-
-
-
     /** ---------------- SPA Form Switching ---------------- */
     function showForm(formId) {
         document.querySelectorAll('.auth-form').forEach(f => f.classList.add('hidden'));
@@ -52,112 +49,112 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('admin-name').textContent = localStorage.getItem('adminFullName') || localStorage.getItem('adminEmail');
         loadUsers();
     }
-/** ---------------- Password Strength + Normalization ---------------- */
-if (registerPassword) {
-    registerPassword.addEventListener('input', function () {
-        // sanitize password input live to remove invisible characters
-        const cleaned = normalizeInput(this.value);
-        if (this.value !== cleaned) this.value = cleaned;
 
-        // now check strength AFTER cleaning
-        const password = this.value;
-        const strength = checkPasswordStrength(password);
-        passwordStrengthBar.style.width = strength.percentage + '%';
-        passwordStrengthBar.style.background = strength.color;
-        passwordStrengthText.textContent = strength.text;
-    });
-}
+    /** ---------------- Password Strength + Normalization ---------------- */
+    if (registerPassword) {
+        registerPassword.addEventListener('input', function () {
+            // sanitize password input live to remove invisible characters
+            const cleaned = normalizeInput(this.value);
+            if (this.value !== cleaned) this.value = cleaned;
 
-// Also sanitize confirm password field if it exists
-const registerConfirm = document.getElementById('register-confirm-password');
-if (registerConfirm) {
-    registerConfirm.addEventListener('input', function () {
-        const cleaned = normalizeInput(this.value);
-        if (this.value !== cleaned) this.value = cleaned;
-    });
-}
+            // now check strength AFTER cleaning
+            const password = this.value;
+            const strength = checkPasswordStrength(password);
+            passwordStrengthBar.style.width = strength.percentage + '%';
+            passwordStrengthBar.style.background = strength.color;
+            passwordStrengthText.textContent = strength.text;
+        });
+    }
 
-/** ---------------- Registration ---------------- */
-if (registerForm) {
-    registerForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const fullName = document.getElementById('register-name').value.trim();
-        const email = document.getElementById('register-email').value.trim();
-        const passwordRaw = document.getElementById('register-password').value;
-        const confirmRaw = document.getElementById('register-confirm-password').value;
-        const adminKey = document.getElementById('admin-key').value;
-        const agreeTerms = document.getElementById('terms-agree').checked;
+    // Also sanitize confirm password field if it exists
+    const registerConfirm = document.getElementById('register-confirm-password');
+    if (registerConfirm) {
+        registerConfirm.addEventListener('input', function () {
+            const cleaned = normalizeInput(this.value);
+            if (this.value !== cleaned) this.value = cleaned;
+        });
+    }
 
-        if (!fullName || !email || !passwordRaw || !confirmRaw || !adminKey) {
-            showNotification('Please fill all fields', 'error');
-            return;
-        }
+    /** ---------------- Registration ---------------- */
+    if (registerForm) {
+        registerForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const fullName = document.getElementById('register-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const passwordRaw = document.getElementById('register-password').value;
+            const confirmRaw = document.getElementById('register-confirm-password').value;
+            const adminKey = document.getElementById('admin-key').value;
+            const agreeTerms = document.getElementById('terms-agree').checked;
 
-        // Normalize and sanitize passwords
-        const p1 = normalizeInput(passwordRaw);
-        const p2 = normalizeInput(confirmRaw);
+            if (!fullName || !email || !passwordRaw || !confirmRaw || !adminKey) {
+                showNotification('Please fill all fields', 'error');
+                return;
+            }
 
-        let passwordFinal;
-        if (p1 === p2) {
-            passwordFinal = p1;
-        } else if (p1.trim() === p2.trim()) {
-            passwordFinal = p1.trim();
-            showNotification('Passwords matched after trimming spaces. Please avoid accidental spaces.', 'warning');
-        } else {
-            // Log useful debug info to console (no DOM debug panel)
+            // Normalize and sanitize passwords
+            const p1 = normalizeInput(passwordRaw);
+            const p2 = normalizeInput(confirmRaw);
+
+            let passwordFinal;
+            if (p1 === p2) {
+                passwordFinal = p1;
+            } else if (p1.trim() === p2.trim()) {
+                passwordFinal = p1.trim();
+                showNotification('Passwords matched after trimming spaces. Please avoid accidental spaces.', 'warning');
+            } else {
+                // Log useful debug info to console (no DOM debug panel)
+                try {
+                    const codes1 = Array.from(p1).map(c => c.charCodeAt(0));
+                    const codes2 = Array.from(p2).map(c => c.charCodeAt(0));
+                    console.debug('Registration password mismatch', {
+                        passwordRaw,
+                        confirmRaw,
+                        normalizedP1: p1,
+                        normalizedP2: p2,
+                        p1Len: p1.length,
+                        p2Len: p2.length,
+                        p1Codes: codes1,
+                        p2Codes: codes2
+                    });
+                } catch (e) {
+                    console.debug('Registration password mismatch (failed to compute codes)', e);
+                }
+                showNotification('Passwords do not match', 'error');
+                return;
+            }
+
+            if (!agreeTerms) {
+                showNotification('You must agree to the terms', 'error');
+                return;
+            }
+
             try {
-                const codes1 = Array.from(p1).map(c => c.charCodeAt(0));
-                const codes2 = Array.from(p2).map(c => c.charCodeAt(0));
-                console.debug('Registration password mismatch', {
-                    passwordRaw,
-                    confirmRaw,
-                    normalizedP1: p1,
-                    normalizedP2: p2,
-                    p1Len: p1.length,
-                    p2Len: p2.length,
-                    p1Codes: codes1,
-                    p2Codes: codes2
+                const payload = {
+                    fullName,
+                    email: email.trim(),
+                    password: passwordFinal,
+                    adminKey: adminKey.trim()
+                };
+
+                const res = await fetch('http://localhost:5000/api/register', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(payload)
                 });
-            } catch (e) {
-                console.debug('Registration password mismatch (failed to compute codes)', e);
+
+                const data = await res.json();
+                if (!res.ok) showNotification(data.error || 'Registration failed', 'error');
+                else {
+                    showNotification(data.message || 'Registration successful', 'success');
+                    registerForm.reset();
+                    setTimeout(() => { showForm('login-form'); }, 1500);
+                }
+            } catch(err) {
+                console.error(err);
+                showNotification('Server error. Try again later.', 'error');
             }
-            showNotification('Passwords do not match', 'error');
-            return;
-        }
-
-        if (!agreeTerms) {
-            showNotification('You must agree to the terms', 'error');
-            return;
-        }
-
-        try {
-            const payload = {
-                fullName,
-                email: email.trim(),
-                password: passwordFinal,
-                adminKey: adminKey.trim()
-            };
-
-            const res = await fetch('http://localhost:5000/api/register', {
-                method: 'POST',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify(payload)
-            });
-
-            const data = await res.json();
-            if (!res.ok) showNotification(data.error || 'Registration failed', 'error');
-            else {
-                showNotification(data.message || 'Registration successful', 'success');
-                registerForm.reset();
-                setTimeout(() => { showForm('login-form'); }, 1500);
-            }
-        } catch(err) {
-            console.error(err);
-            showNotification('Server error. Try again later.', 'error');
-        }
-    });
-}
-
+        });
+    }
 
     /** ---------------- Login ---------------- */
     if (loginForm) {
@@ -286,46 +283,45 @@ if (registerForm) {
     });
 
     /** ---------------- Load Users & Teachers ---------------- */
-   async function loadUsers() {
-    if (!usersTableBody) {
-        console.error("❌ usersTableBody not found in DOM");
-        return;
-    }
-
-    try {
-        const res = await fetch('http://localhost:5000/api/users');
-        const data = await res.json();
-        console.log("Fetched users:", data);
-
-        usersTableBody.innerHTML = "";
-
-        if (!data.users || data.users.length === 0) {
-            usersTableBody.innerHTML = `<tr><td colspan="7">No users found</td></tr>`;
+    async function loadUsers() {
+        if (!usersTableBody) {
+            console.error("❌ usersTableBody not found in DOM");
             return;
         }
 
-        data.users.forEach(user => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${user.fullName || "-"}</td>
-                <td>${user.role}</td>
-                <td>${user.grade || "-"}</td>
-                <td>${user.school || "-"}</td>
-                <td>${user.lastActive || "Never"}</td>
-                <td><span class="status ${user.status === 'active' ? 'active' : 'inactive'}">${user.status}</span></td>
-                <td>
-                    <button class="btn-sm">Edit</button>
-                    <button class="btn-sm btn-danger">Delete</button>
-                </td>
-            `;
-            usersTableBody.appendChild(tr);
-        });
-    } catch(err) {
-        console.error("Error loading users:", err);
-        usersTableBody.innerHTML = `<tr><td colspan="7">Error loading users</td></tr>`;
-    }
-}
+        try {
+            const res = await fetch('http://localhost:5000/api/users');
+            const data = await res.json();
+            console.log("Fetched users:", data);
 
+            usersTableBody.innerHTML = "";
+
+            if (!data.users || data.users.length === 0) {
+                usersTableBody.innerHTML = `<tr><td colspan="7">No users found</td></tr>`;
+                return;
+            }
+
+            data.users.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${user.fullName || "-"}</td>
+                    <td>${user.role}</td>
+                    <td>${user.grade || "-"}</td>
+                    <td>${user.school || "-"}</td>
+                    <td>${user.lastActive || "Never"}</td>
+                    <td><span class="status ${user.status === 'active' ? 'active' : 'inactive'}">${user.status}</span></td>
+                    <td>
+                        <button class="btn-sm">Edit</button>
+                        <button class="btn-sm btn-danger">Delete</button>
+                    </td>
+                `;
+                usersTableBody.appendChild(tr);
+            });
+        } catch(err) {
+            console.error("Error loading users:", err);
+            usersTableBody.innerHTML = `<tr><td colspan="7">Error loading users</td></tr>`;
+        }
+    }
 
     /** ---------------- Load Bug Reports ---------------- */
     async function loadBugReports() {
@@ -431,7 +427,6 @@ if (registerForm) {
         });
     });
 
-
     /** ---------------- Helper Functions ---------------- */
     function checkPasswordStrength(password) {
         let strength=0, text='', color='#e74c3c';
@@ -466,5 +461,33 @@ if (registerForm) {
         setTimeout(()=> notif.classList.add('show'),10);
         setTimeout(()=> { notif.classList.remove('show'); setTimeout(()=>notif.remove(),300); },3000);
     }
+
+    // Sidebar navigation functionality
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const sectionId = this.getAttribute('data-section');
+            
+            // Remove active class from all links and sections
+            navLinks.forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            
+            // Add active class to clicked link
+            this.classList.add('active');
+            
+            // Show target section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                
+                // Load specific data based on section
+                if (sectionId === 'reports') {
+                    setTimeout(loadBugReports, 50);
+                } else if (sectionId === 'users') {
+                    loadUsers();
+                }
+            }
+        });
+    });
 
 });
