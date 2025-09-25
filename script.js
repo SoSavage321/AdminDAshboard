@@ -27,6 +27,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const showRegisterBtn = document.getElementById('show-register');
     const showLoginBtn = document.getElementById('show-login');
     const backToLoginBtn = document.getElementById('back-to-login');
+    const forgotLink = document.getElementById('forgot-password');
+    const forgotModal = document.getElementById('forgot-modal');
+    const forgotModalForm = document.getElementById('forgot-modal-form');
+    const forgotModalEmail = document.getElementById('forgot-modal-email');
+    const forgotModalCancel = document.getElementById('forgot-modal-cancel');
 
     const usersTableBody = document.getElementById("users-table-body");// Make sure your table has id="users-table"
 
@@ -40,9 +45,75 @@ document.addEventListener('DOMContentLoaded', function () {
         if (form) form.classList.remove('hidden');
     }
 
+    // Helper to send Firebase password reset via REST API
+    async function sendResetEmail(email) {
+        if (!email) { showNotification('Enter your email', 'error'); return; }
+        try {
+            console.debug('Sending password reset for', email);
+            const apiKey = 'AIzaSyCp-VbOO8Eu9PJwIwdIdx7GZRj3mKJFI0U';
+            const endpoint = `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`;
+            const payload = { requestType: 'PASSWORD_RESET', email };
+
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+                const msg = (data && data.error && data.error.message) ? data.error.message : 'Failed to send reset email';
+                console.error('Firebase reset error', data);
+                showNotification(msg, 'error');
+            } else {
+                showNotification('If that email exists, a password reset link has been sent.', 'success');
+                const form = document.getElementById('forgot-password-form');
+                try { if (form) form.reset(); } catch(e){}
+            }
+        } catch (err) {
+            console.error('Error sending reset email', err);
+            showNotification('Error sending reset email. Try again later.', 'error');
+        }
+    }
+
     if (showRegisterBtn) showRegisterBtn.addEventListener('click', e => { e.preventDefault(); showForm('register-form'); });
     if (showLoginBtn) showLoginBtn.addEventListener('click', e => { e.preventDefault(); showForm('login-form'); });
     if (backToLoginBtn) backToLoginBtn.addEventListener('click', e => { e.preventDefault(); showForm('login-form'); });
+    if (forgotLink) forgotLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        // Open in-page modal
+        if (forgotModal) {
+            forgotModal.classList.remove('hidden');
+            setTimeout(() => { if (forgotModalEmail) forgotModalEmail.focus(); }, 50);
+        } else {
+            // Fallback to prompt
+            const email = window.prompt('Please enter your email to receive a password reset link:');
+            if (email) sendResetEmail(email.trim());
+        }
+    });
+
+    // Modal handlers
+    if (forgotModal) {
+        // close when clicking overlay outside the modal
+        forgotModal.addEventListener('click', function (e) {
+            if (e.target === forgotModal) {
+                forgotModal.classList.add('hidden');
+            }
+        });
+    }
+    if (forgotModalCancel) {
+        forgotModalCancel.addEventListener('click', function () { if (forgotModal) forgotModal.classList.add('hidden'); });
+    }
+    if (forgotModalForm) {
+        forgotModalForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = forgotModalEmail ? forgotModalEmail.value.trim() : '';
+            if (email) {
+                sendResetEmail(email);
+                if (forgotModal) forgotModal.classList.add('hidden');
+            }
+        });
+    }
 
     /** ---------------- Show Dashboard if Logged In ---------------- */
     const token = localStorage.getItem('idToken');
@@ -199,24 +270,56 @@ if (registerForm) {
 
     /** ---------------- Forgot Password ---------------- */
     if (forgotForm) {
-        forgotForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const email = document.getElementById('reset-email').value.trim();
+        // helper to call Firebase REST API
+        async function sendResetEmail(email) {
             if (!email) { showNotification('Enter your email', 'error'); return; }
-
             try {
-                const res = await fetch('http://localhost:5000/api/forgot-password', {
+                console.debug('Sending password reset for', email);
+                const apiKey = 'AIzaSyCp-VbOO8Eu9PJwIwdIdx7GZRj3mKJFI0U';
+                const endpoint = `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`;
+                const payload = { requestType: 'PASSWORD_RESET', email };
+
+                const res = await fetch(endpoint, {
                     method: 'POST',
-                    headers: {'Content-Type':'application/json'},
-                    body: JSON.stringify({email})
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
+
                 const data = await res.json();
-                showNotification(data.message || 'Reset link sent', res.ok ? 'success':'error');
-            } catch(err) {
-                console.error(err);
-                showNotification('Server error. Try again later.', 'error');
+                if (!res.ok) {
+                    const msg = (data && data.error && data.error.message) ? data.error.message : 'Failed to send reset email';
+                    console.error('Firebase reset error', data);
+                    showNotification(msg, 'error');
+                } else {
+                    showNotification('If that email exists, a password reset link has been sent.', 'success');
+                    try { forgotForm.reset(); } catch(e){}
+                }
+            } catch (err) {
+                console.error('Error sending reset email', err);
+                showNotification('Error sending reset email. Try again later.', 'error');
             }
+        }
+
+        // Attach submit handler
+        forgotForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('reset-email') ? document.getElementById('reset-email').value.trim() : '';
+            sendResetEmail(email);
         });
+
+        // Fallback: attach click handler to the button inside the form (in case submit is prevented)
+        const forgotBtn = forgotForm.querySelector('button[type="submit"]');
+        if (forgotBtn) {
+            forgotBtn.addEventListener('click', function (e) {
+                // allow submit handler to run; but also call explicitly after a short tick if default prevented
+                setTimeout(() => {
+                    if (document.activeElement === forgotBtn) {
+                        const email = document.getElementById('reset-email') ? document.getElementById('reset-email').value.trim() : '';
+                        sendResetEmail(email);
+                    }
+                }, 20);
+            });
+        }
     }
 
     /** ---------------- Add Teacher ---------------- */

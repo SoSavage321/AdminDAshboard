@@ -334,6 +334,23 @@
     </div>
 
     <script src="script.js"></script>
+    <!-- Forgot Password Modal -->
+    <div id="forgot-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="forgot-modal-title">
+        <div class="modal">
+            <h3 id="forgot-modal-title">Reset your password</h3>
+            <p>Enter your email and we'll send a password reset link.</p>
+            <form id="forgot-modal-form">
+                <div class="form-group">
+                    <label for="forgot-modal-email">Email</label>
+                    <input type="email" id="forgot-modal-email" required placeholder="you@example.com">
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px;">
+                    <button type="button" class="btn-primary" id="forgot-modal-cancel">Cancel</button>
+                    <button type="submit" class="btn-primary" id="forgot-modal-send">Send Reset Email</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script>
         // Sidebar navigation
         document.addEventListener('DOMContentLoaded', function () {
