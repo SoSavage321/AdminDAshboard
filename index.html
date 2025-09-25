@@ -621,5 +621,55 @@
     </div>
 
     <script src="script.js"></script>
+<<<<<<< HEAD
+=======
+    <!-- Forgot Password Modal -->
+    <div id="forgot-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="forgot-modal-title">
+        <div class="modal">
+            <h3 id="forgot-modal-title">Reset your password</h3>
+            <p>Enter your email and we'll send a password reset link.</p>
+            <form id="forgot-modal-form">
+                <div class="form-group">
+                    <label for="forgot-modal-email">Email</label>
+                    <input type="email" id="forgot-modal-email" required placeholder="you@example.com">
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px;">
+                    <button type="button" class="btn-primary" id="forgot-modal-cancel">Cancel</button>
+                    <button type="submit" class="btn-primary" id="forgot-modal-send">Send Reset Email</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Sidebar navigation
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarLinks = document.querySelectorAll('.nav-menu a[data-section]');
+            const sections = document.querySelectorAll('.content-section');
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    sections.forEach(sec => sec.classList.remove('active'));
+                    const target = document.getElementById(sectionId);
+                    if (target) target.classList.add('active');
+                });
+            });
+
+            // Tabs for Content Management
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetTab = btn.dataset.tab;
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        });
+    </script>
+>>>>>>> 88752965e785df28c6e2c64a0b7ebe427c7ea38b
 </body>
 </html>

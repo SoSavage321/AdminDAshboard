@@ -1111,6 +1111,34 @@ body::before {
 }
 
 .report-card .error {
+<<<<<<< HEAD
     color: var(--warm-brown);
     font-weight: 600;
 }
+=======
+    color: #e74c3c;
+}
+
+/* Modal - simple centered overlay */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+.modal {
+    background: white;
+    padding: 20px;
+    width: 420px;
+    max-width: calc(100% - 40px);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.modal h3 { margin-bottom: 6px; }
+.modal p { color: #7f8c8d; margin-bottom: 12px; }
+.modal .form-group input { width: 100%; }
+.modal-overlay.hidden { display: none; }
+>>>>>>> 88752965e785df28c6e2c64a0b7ebe427c7ea38b

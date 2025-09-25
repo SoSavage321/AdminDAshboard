@@ -7,6 +7,8 @@ const admin = require("./firebaseAdmin");
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+
 // ---------------- Admin Registration ----------------
 app.post("/api/register", async (req, res) => {
   const { fullName, email, password, adminKey } = req.body;
