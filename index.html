@@ -76,18 +76,16 @@
                     <input type="password" id="admin-key" required placeholder="Enter administrator key">
                     <small>Provided by system administrator</small>
                 </div>
-                <div class="form-options">
-                    <label class="checkbox-container">
+                <div class="form-options terms-row">
+                    <label class="checkbox-container" aria-label="Agree to terms">
                         <input type="checkbox" id="terms-agree" required>
                         <span class="checkmark"></span>
-                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
                     </label>
+                    <div class="terms-text">I agree to the Terms of Service and Privacy Policy</div>
                 </div>
                 <button type="submit" class="btn-primary">Create Account</button>
             </form>
-            <div class="auth-footer">
-                <p>Already have an account? <a href="#" id="show-login">Login</a></p>
-            </div>
+            <!-- login link removed from registration form per request -->
         </div>
 
         <!-- Forgot Password Form -->
@@ -122,7 +120,7 @@
                     <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
                     <li><a href="#" data-section="users"><i class="fas fa-users"></i> User Management</a></li>
                     <li><a href="#" data-section="add-teachers"><i class="fas fa-user-plus"></i> Add Teachers</a></li>
-                    <li><a href="#" data-section="content"><i class="fas fa-book"></i> Content Management</a></li>
+                    <!-- Content Management removed -->
                     <li><a href="#" data-section="progress"><i class="fas fa-chart-line"></i> Progress Tracking</a></li>
                     <li><a href="#" data-section="leaderboards"><i class="fas fa-trophy"></i> Leaderboards</a></li>
                     <li><a href="#" data-section="reports"><i class="fas fa-clipboard-list"></i> Reports</a></li>
@@ -130,13 +128,6 @@
                 </ul>
             </nav>
             <div class="user-actions">
-                <div class="user-profile-sidebar">
-                    <div class="user-avatar">A</div>
-                    <div class="user-info">
-                        <h4>Admin User</h4>
-                        <p>Administrator</p>
-                    </div>
-                </div>
                 <button id="logout-btn">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
@@ -151,10 +142,6 @@
                     <input type="text" id="search-users" placeholder="Search anything...">
                 </div>
                 <div class="top-bar-right">
-                    <div class="notifications">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </div>
                     <div class="user-profile-header">
                         <div class="user-info">
                             <h4 id="admin-name">Admin User</h4>
@@ -181,10 +168,8 @@
                                 </div>
                             </div>
                             <div class="stat-title">Total Users</div>
-                            <div class="stat-value" id="total-users">2,847</div>
-                            <div class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +12.5% from last month
-                            </div>
+                            <div class="stat-value" id="total-users"></div>
+                            <div class="stat-change positive" id="total-users-change"></div>
                         </div>
                         
                         <div class="stat-card">
@@ -194,10 +179,8 @@
                                 </div>
                             </div>
                             <div class="stat-title">Active Today</div>
-                            <div class="stat-value" id="active-today">458</div>
-                            <div class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +8.2% from yesterday
-                            </div>
+                            <div class="stat-value" id="active-today"></div>
+                            <div class="stat-change positive" id="active-today-change"></div>
                         </div>
                         
                         <div class="stat-card">
@@ -207,10 +190,8 @@
                                 </div>
                             </div>
                             <div class="stat-title">Quizzes Completed</div>
-                            <div class="stat-value" id="quizzes-completed">12,364</div>
-                            <div class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +15.7% from last week
-                            </div>
+                            <div class="stat-value" id="quizzes-completed"></div>
+                            <div class="stat-change positive" id="quizzes-completed-change"></div>
                         </div>
                         
                         <div class="stat-card">
@@ -220,10 +201,8 @@
                                 </div>
                             </div>
                             <div class="stat-title">Average Score</div>
-                            <div class="stat-value" id="avg-score">87.3%</div>
-                            <div class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +2.1% improvement
-                            </div>
+                            <div class="stat-value" id="avg-score"></div>
+                            <div class="stat-change positive" id="avg-score-change"></div>
                         </div>
                     </div>
 
@@ -233,38 +212,7 @@
                             <a href="#" class="view-all-btn">View All</a>
                         </div>
                         <div class="activity-list" id="recent-activity">
-                            <div class="activity-item">
-                                <div class="activity-avatar">JD</div>
-                                <div class="activity-content">
-                                    <h4>John Doe completed Math Quiz Level 5</h4>
-                                    <p>Scored 95% on Advanced Algebra</p>
-                                </div>
-                                <div class="activity-time">2 min ago</div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-avatar">SM</div>
-                                <div class="activity-content">
-                                    <h4>Sarah Miller joined Grade 6 class</h4>
-                                    <p>New student registration completed</p>
-                                </div>
-                                <div class="activity-time">15 min ago</div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-avatar">RJ</div>
-                                <div class="activity-content">
-                                    <h4>Robert Johnson earned "Math Master" badge</h4>
-                                    <p>Completed 50 consecutive quizzes</p>
-                                </div>
-                                <div class="activity-time">1 hour ago</div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-avatar">LW</div>
-                                <div class="activity-content">
-                                    <h4>Lisa Wang submitted progress report</h4>
-                                    <p>Grade 5 monthly assessment completed</p>
-                                </div>
-                                <div class="activity-time">3 hours ago</div>
-                            </div>
+                            <p class="muted">No recent activity</p>
                         </div>
                     </div>
                 </section>
@@ -273,7 +221,7 @@
                 <section id="users" class="content-section">
                     <div class="section-header">
                         <h2>User Management</h2>
-                        <p>Manage students, teachers, and parents in your system.</p>
+                      
                     </div>
                     
                     <div class="section-controls">
@@ -286,9 +234,6 @@
                             </select>
                             <input type="text" id="user-search" placeholder="Filter users...">
                         </div>
-                        <button class="btn-primary" id="add-user-btn">
-                            <i class="fas fa-plus"></i> Add New User
-                        </button>
                     </div>
 
                     <div class="table-container">
@@ -299,7 +244,6 @@
                                     <th>Role</th>
                                     <th>Grade</th>
                                     <th>School</th>
-                                    <th>Last Active</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -315,8 +259,7 @@
                                     <td>Student</td>
                                     <td>Grade 5</td>
                                     <td>Riverside Elementary</td>
-                                    <td>2 hours ago</td>
-                                    <td><span class="status active">Active</span></td>
+                                    <td><span class="status active">Online</span></td>
                                     <td>
                                         <button class="btn-sm btn-edit">Edit</button>
                                         <button class="btn-sm btn-delete">Delete</button>
@@ -332,8 +275,7 @@
                                     <td>Teacher</td>
                                     <td>Grade 6</td>
                                     <td>Oak Valley School</td>
-                                    <td>1 day ago</td>
-                                    <td><span class="status active">Active</span></td>
+                                    <td><span class="status inactive">Offline</span></td>
                                     <td>
                                         <button class="btn-sm btn-edit">Edit</button>
                                         <button class="btn-sm btn-delete">Delete</button>
@@ -349,8 +291,7 @@
                                     <td>Parent</td>
                                     <td>Grade 4</td>
                                     <td>Pine Ridge Elementary</td>
-                                    <td>3 days ago</td>
-                                    <td><span class="status inactive">Inactive</span></td>
+                                    <td><span class="status inactive">Offline</span></td>
                                     <td>
                                         <button class="btn-sm btn-edit">Edit</button>
                                         <button class="btn-sm btn-delete">Delete</button>
@@ -389,57 +330,7 @@
                     </div>
                 </section>
 
-                <!-- Content Management Section -->
-                <section id="content" class="content-section">
-                    <div class="section-header">
-                        <h2>Content Management</h2>
-                        <p>Manage quizzes, challenges, and educational content.</p>
-                    </div>
-                    
-                    <div class="activity-section">
-                        <div class="activity-header">
-                            <h3>Recent Quizzes</h3>
-                            <button class="btn-primary">
-                                <i class="fas fa-plus"></i> Add New Quiz
-                            </button>
-                        </div>
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-avatar" style="background: linear-gradient(135deg, var(--sage-green), var(--light-green));">Q1</div>
-                                <div class="activity-content">
-                                    <h4>Advanced Multiplication - Grade 5</h4>
-                                    <p>15 questions • Average score: 84%</p>
-                                </div>
-                                <div class="activity-time">
-                                    <button class="btn-sm btn-edit">Edit</button>
-                                    <button class="btn-sm btn-delete">Delete</button>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-avatar" style="background: linear-gradient(135deg, var(--golden-yellow), var(--warm-yellow));">Q2</div>
-                                <div class="activity-content">
-                                    <h4>Fractions Fundamentals - Grade 4</h4>
-                                    <p>12 questions • Average score: 79%</p>
-                                </div>
-                                <div class="activity-time">
-                                    <button class="btn-sm btn-edit">Edit</button>
-                                    <button class="btn-sm btn-delete">Delete</button>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-avatar" style="background: linear-gradient(135deg, var(--light-brown), var(--warm-brown));">Q3</div>
-                                <div class="activity-content">
-                                    <h4>Geometry Basics - Grade 6</h4>
-                                    <p>20 questions • Average score: 91%</p>
-                                </div>
-                                <div class="activity-time">
-                                    <button class="btn-sm btn-edit">Edit</button>
-                                    <button class="btn-sm btn-delete">Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <!-- Content Management removed to simplify UI -->
 
                 <!-- Progress Tracking Section -->
                 <section id="progress" class="content-section">
@@ -456,9 +347,9 @@
                                 </div>
                             </div>
                             <div class="stat-title">Overall Progress</div>
-                            <div class="stat-value">76.8%</div>
+                            <div class="stat-value" id="overall-progress-value">-</div>
                             <div class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +4.2% this month
+                                
                             </div>
                         </div>
                         
@@ -469,7 +360,7 @@
                                 </div>
                             </div>
                             <div class="stat-title">Top Performers</div>
-                            <div class="stat-value">142</div>
+                            <div class="stat-value" id="top-performers-value">-</div>
                             <div class="stat-change positive">
                                 <i class="fas fa-arrow-up"></i> Above 90% score
                             </div>
@@ -485,49 +376,10 @@
                                     <th>School</th>
                                     <th>Avg. Score</th>
                                     <th>Quizzes Completed</th>
-                                    <th>Last Activity</th>
                                 </tr>
                             </thead>
                             <tbody id="progress-table-body">
-                                <tr>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 10px;">
-                                            <div class="user-avatar" style="width: 35px; height: 35px; font-size: 12px;">EM</div>
-                                            Emma Martinez
-                                        </div>
-                                    </td>
-                                    <td>Grade 5</td>
-                                    <td>Riverside Elementary</td>
-                                    <td><span style="color: var(--primary-green); font-weight: 600;">95%</span></td>
-                                    <td>28</td>
-                                    <td>1 hour ago</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 10px;">
-                                            <div class="user-avatar" style="width: 35px; height: 35px; font-size: 12px;">MC</div>
-                                            Michael Chen
-                                        </div>
-                                    </td>
-                                    <td>Grade 6</td>
-                                    <td>Oak Valley School</td>
-                                    <td><span style="color: var(--primary-green); font-weight: 600;">92%</span></td>
-                                    <td>31</td>
-                                    <td>3 hours ago</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 10px;">
-                                            <div class="user-avatar" style="width: 35px; height: 35px; font-size: 12px;">AB</div>
-                                            Ava Brown
-                                        </div>
-                                    </td>
-                                    <td>Grade 4</td>
-                                    <td>Pine Ridge Elementary</td>
-                                    <td><span style="color: var(--golden-yellow); font-weight: 600;">78%</span></td>
-                                    <td>19</td>
-                                    <td>1 day ago</td>
-                                </tr>
+                                <tr><td colspan="5">No progress data</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -543,31 +395,9 @@
                         <div class="activity-header">
                             <h3>Top Students This Month</h3>
                         </div>
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-avatar" style="background: linear-gradient(135deg, #FFD700, #FFA500);">1</div>
-                                <div class="activity-content">
-                                    <h4>Emma Martinez</h4>
-                                    <p>2,847 points • Grade 5</p>
-                                </div>
-                                <div class="activity-time">🏆</div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-avatar" style="background: linear-gradient(135deg, #C0C0C0, #A8A8A8);">2</div>
-                                <div class="activity-content">
-                                    <h4>Michael Chen</h4>
-                                    <p>2,654 points • Grade 6</p>
-                                </div>
-                                <div class="activity-time">🥈</div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-avatar" style="background: linear-gradient(135deg, #CD7F32, #B8860B);">3</div>
-                                <div class="activity-content">
-                                    <h4>Sophie Wilson</h4>
-                                    <p>2,421 points • Grade 5</p>
-                                </div>
-                                <div class="activity-time">🥉</div>
-                            </div>
+                        <div id="leaderboard-list" class="activity-list">
+                            <!-- Leaderboard entries will be populated dynamically -->
+                            <p class="muted">Loading leaderboard...</p>
                         </div>
                     </div>
                 </section>
@@ -620,56 +450,29 @@
         </main>
     </div>
 
-    <script src="script.js"></script>
-<<<<<<< HEAD
-=======
-    <!-- Forgot Password Modal -->
+    <!-- Forgot PIN Modal (styled like registration) -->
     <div id="forgot-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="forgot-modal-title">
-        <div class="modal">
-            <h3 id="forgot-modal-title">Reset your password</h3>
-            <p>Enter your email and we'll send a password reset link.</p>
+        <div class="auth-card modal-card">
+            <div class="form-header">
+                <h2 id="forgot-modal-title">Reset PIN</h2>
+                <p>Enter your email to receive a PIN reset link</p>
+            </div>
             <form id="forgot-modal-form">
                 <div class="form-group">
-                    <label for="forgot-modal-email">Email</label>
-                    <input type="email" id="forgot-modal-email" required placeholder="you@example.com">
+                    <label for="forgot-modal-email">Email Address</label>
+                    <input type="email" id="forgot-modal-email" required placeholder="admin@example.com">
                 </div>
-                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px;">
-                    <button type="button" class="btn-primary" id="forgot-modal-cancel">Cancel</button>
-                    <button type="submit" class="btn-primary" id="forgot-modal-send">Send Reset Email</button>
+                <div class="form-options" style="justify-content:flex-end;gap:8px;">
+                    <button type="button" class="btn-secondary" id="forgot-modal-cancel">Cancel</button>
+                    <button type="submit" class="btn-primary">Send Reset Link</button>
                 </div>
             </form>
+            <div class="auth-footer">
+                <p>Remember your PIN? <a href="#" id="back-to-login-modal">Back to Login</a></p>
+            </div>
         </div>
     </div>
-    <script>
-        // Sidebar navigation
-        document.addEventListener('DOMContentLoaded', function () {
-            const sidebarLinks = document.querySelectorAll('.nav-menu a[data-section]');
-            const sections = document.querySelectorAll('.content-section');
 
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const sectionId = this.getAttribute('data-section');
-                    sections.forEach(sec => sec.classList.remove('active'));
-                    const target = document.getElementById(sectionId);
-                    if (target) target.classList.add('active');
-                });
-            });
-
-            // Tabs for Content Management
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const targetTab = btn.dataset.tab;
-                    tabButtons.forEach(b => b.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    btn.classList.add('active');
-                    document.getElementById(targetTab).classList.add('active');
-                });
-            });
-        });
-    </script>
->>>>>>> 88752965e785df28c6e2c64a0b7ebe427c7ea38b
+    <script src="script.js"></script>
 </body>
 </html>

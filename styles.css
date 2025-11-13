@@ -185,17 +185,24 @@ body::before {
 
 /* Checkbox Styles */
 .checkbox-container {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     cursor: pointer;
     font-size: 0.9rem;
     margin-bottom: 10px;
+    position: relative; /* ensure absolute input aligns to this container */
+    gap: 10px;
 }
 
 .checkbox-container input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
 }
 
 .checkmark {
@@ -242,6 +249,18 @@ body::before {
     font-size: 0.9rem;
 }
 
+.terms-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.terms-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    user-select: text;
+}
+
 .form-options a {
     color: var(--text-secondary);
     text-decoration: none;
@@ -277,10 +296,19 @@ body::before {
 }
 
 .auth-form {
+    /* Make auth forms (register/forgot) visually match the login card */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0;
+    background: var(--cream-white);
+    border-radius: 24px;
+    border: 2px solid var(--border-light);
+    box-shadow: var(--shadow-medium);
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    overflow: hidden;
 }
 
 .auth-form.hidden {
@@ -751,6 +779,87 @@ body::before {
     gap: 15px;
 }
 
+/* Leaderboard specific styles */
+.leaderboard-top {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.leaderboard-top .top-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), var(--cream-white));
+    border: 2px solid rgba(127,176,105,0.12);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(127,176,105,0.06);
+}
+
+.top-rank {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: white;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.top-rank.rank-1 { background: linear-gradient(135deg, var(--golden-yellow), var(--warm-yellow)); color: #4a2f00; }
+.top-rank.rank-2 { background: linear-gradient(135deg, var(--primary-green), var(--sage-green)); }
+.top-rank.rank-3 { background: linear-gradient(135deg, var(--light-brown), var(--warm-brown)); }
+
+.top-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    margin-bottom: 10px;
+    font-size: 20px;
+    background: linear-gradient(135deg, var(--primary-green), var(--sage-green));
+}
+
+.top-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.top-school {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.top-score {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--primary-green);
+}
+
+.leaderboard-list-others {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.leaderboard-item.small {
+    padding: 10px 12px;
+}
+
 .activity-item {
     display: flex;
     align-items: center;
@@ -1111,11 +1220,6 @@ body::before {
 }
 
 .report-card .error {
-<<<<<<< HEAD
-    color: var(--warm-brown);
-    font-weight: 600;
-}
-=======
     color: #e74c3c;
 }
 
@@ -1141,4 +1245,3 @@ body::before {
 .modal p { color: #7f8c8d; margin-bottom: 12px; }
 .modal .form-group input { width: 100%; }
 .modal-overlay.hidden { display: none; }
->>>>>>> 88752965e785df28c6e2c64a0b7ebe427c7ea38b
